@@ -1,13 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:logger_plus/logger_plus.dart';
-import 'package:logger_plus/src/filters/development_filter.dart';
-import 'package:logger_plus/src/log_filter.dart';
-import 'package:logger_plus/src/log_output.dart';
-import 'package:logger_plus/src/log_printer.dart';
-import 'package:logger_plus/src/outputs/console_output.dart';
-import 'package:logger_plus/src/printers/pretty_printer.dart';
 
 /// [Level]s to control logging output. Logging can be enabled to include all
 /// levels above certain [Level].
@@ -54,8 +47,7 @@ class Logger {
   final LogPrinter _printer;
   final LogOutput _output;
   bool _active = true;
-  static final StreamController<OutputEvent> _streamController =
-      StreamController<OutputEvent>.broadcast(sync: true);
+  static final StreamController<OutputEvent> _streamController = StreamController<OutputEvent>.broadcast(sync: true);
 
   /// Create a new instance of Logger.
   ///
@@ -111,8 +103,7 @@ class Logger {
   }
 
   /// Log a message with [level].
-  void log(Level level, dynamic message,
-      [dynamic error, StackTrace? stackTrace]) {
+  void log(Level level, dynamic message, [dynamic error, StackTrace? stackTrace]) {
     if (!_active) {
       throw ArgumentError('Logger has already been closed.');
     } else if (error != null && error is StackTrace) {
@@ -132,8 +123,8 @@ class Logger {
         try {
           _output.output(outputEvent);
         } catch (e, s) {
-            print(e);
-            print(s);
+          print(e);
+          print(s);
         }
       }
     }

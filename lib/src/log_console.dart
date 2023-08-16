@@ -38,7 +38,7 @@ class LogConsole extends StatefulWidget {
   }
 
   @override
-  _LogConsoleState createState() => _LogConsoleState();
+  LogConsoleState createState() => LogConsoleState();
 }
 
 class RenderedEvent {
@@ -50,7 +50,7 @@ class RenderedEvent {
   RenderedEvent(this.id, this.level, this.span, this.lowerCaseText);
 }
 
-class _LogConsoleState extends State<LogConsole> {
+class LogConsoleState extends State<LogConsole> {
   //OutputCallback? _callback;
 
   final ListQueue<RenderedEvent> _renderedBuffer = ListQueue();
@@ -90,8 +90,7 @@ class _LogConsoleState extends State<LogConsole> {
     });*/
     _scrollController.addListener(() {
       if (!_scrollListenerEnabled) return;
-      var scrolledToBottom = _scrollController.offset >=
-          _scrollController.position.maxScrollExtent;
+      var scrolledToBottom = _scrollController.offset >= _scrollController.position.maxScrollExtent;
       setState(() {
         _followBottom = scrolledToBottom;
       });
@@ -164,11 +163,11 @@ class _LogConsoleState extends State<LogConsole> {
             child: FloatingActionButton(
               mini: true,
               clipBehavior: Clip.antiAlias,
+              onPressed: _scrollToBottom,
               child: Icon(
                 Icons.arrow_downward,
                 color: widget.dark ? Colors.white : Colors.lightBlue[900],
               ),
-              onPressed: _scrollToBottom,
             ),
           ),
         ),
@@ -265,28 +264,28 @@ class _LogConsoleState extends State<LogConsole> {
             value: _filterLevel,
             items: const [
               DropdownMenuItem(
-                child: Text("VERBOSE"),
                 value: Level.verbose,
+                child: Text("VERBOSE"),
               ),
               DropdownMenuItem(
-                child: Text("DEBUG"),
                 value: Level.debug,
+                child: Text("DEBUG"),
               ),
               DropdownMenuItem(
-                child: Text("INFO"),
                 value: Level.info,
+                child: Text("INFO"),
               ),
               DropdownMenuItem(
-                child: Text("WARNING"),
                 value: Level.warning,
+                child: Text("WARNING"),
               ),
               DropdownMenuItem(
-                child: Text("ERROR"),
                 value: Level.error,
+                child: Text("ERROR"),
               ),
               DropdownMenuItem(
-                child: Text("WTF"),
                 value: Level.wtf,
+                child: Text("WTF"),
               )
             ],
             onChanged: (value) {
@@ -340,8 +339,7 @@ class LogBar extends StatelessWidget {
   final bool dark;
   final Widget child;
 
-  const LogBar({Key? key, required this.dark, required this.child})
-      : super(key: key);
+  const LogBar({Key? key, required this.dark, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

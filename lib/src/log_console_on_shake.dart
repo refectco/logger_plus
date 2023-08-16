@@ -13,10 +13,10 @@ class LogConsoleOnShake extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _LogConsoleOnShakeState createState() => _LogConsoleOnShakeState();
+  LogConsoleOnShakeState createState() => LogConsoleOnShakeState();
 }
 
-class _LogConsoleOnShakeState extends State<LogConsoleOnShake> {
+class LogConsoleOnShakeState extends State<LogConsoleOnShake> {
   ShakeDetector? _detector;
   bool _open = false;
 

@@ -1,5 +1,5 @@
-import 'package:logger_plus/src/logger.dart';
 import 'package:logger_plus/src/log_printer.dart';
+import 'package:logger_plus/src/logger.dart';
 
 /// A decorator for a [LogPrinter] that allows for the composition of
 /// different printers to handle different log messages. Provide it's
@@ -16,8 +16,7 @@ class HybridPrinter extends LogPrinter {
   final LogPrinter _realPrinter;
   var _printerMap;
 
-  HybridPrinter(this._realPrinter,
-      {debug, verbose, wtf, info, warning, error}) {
+  HybridPrinter(this._realPrinter, {debug, verbose, wtf, info, warning, error}) {
     _printerMap = {
       Level.debug: debug ?? _realPrinter,
       Level.verbose: verbose ?? _realPrinter,

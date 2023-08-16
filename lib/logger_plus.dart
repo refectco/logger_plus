@@ -13,8 +13,8 @@ export 'src/ansi_color.dart';
 export 'src/filters/development_filter.dart';
 export 'src/filters/production_filter.dart';
 export 'src/log_filter.dart';
-export 'src/log_output.dart'
-    if (dart.library.io) 'src/outputs/file_output.dart';
+export 'src/log_output.dart' if (dart.library.io) 'src/outputs/file_output.dart';
+// ignore: duplicate_export
 export 'src/log_output.dart';
 export 'src/log_printer.dart';
 export 'src/logger.dart';
