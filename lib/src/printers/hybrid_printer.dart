@@ -1,5 +1,4 @@
-import 'package:logger_plus/src/log_printer.dart';
-import 'package:logger_plus/src/logger.dart';
+import 'package:logger_plus/logger_plus.dart';
 
 /// A decorator for a [LogPrinter] that allows for the composition of
 /// different printers to handle different log messages. Provide it's
@@ -13,20 +12,27 @@ import 'package:logger_plus/src/logger.dart';
 /// Will use the pretty printer for all logs except Level.debug
 /// logs, which will use SimplePrinter().
 class HybridPrinter extends LogPrinter {
-  final LogPrinter _realPrinter;
-  var _printerMap;
+  final Map<Level, LogPrinter> _printerMap;
 
-  HybridPrinter(this._realPrinter, {debug, verbose, wtf, info, warning, error}) {
-    _printerMap = {
-      Level.debug: debug ?? _realPrinter,
-      Level.verbose: verbose ?? _realPrinter,
-      Level.wtf: wtf ?? _realPrinter,
-      Level.info: info ?? _realPrinter,
-      Level.warning: warning ?? _realPrinter,
-      Level.error: error ?? _realPrinter,
-    };
-  }
+  HybridPrinter(
+    LogPrinter realPrinter, {
+    LogPrinter? debug,
+    LogPrinter? trace,
+    @Deprecated('[verbose] is being deprecated in favor of [trace].') LogPrinter? verbose,
+    LogPrinter? fatal,
+    @Deprecated('[wtf] is being deprecated in favor of [fatal].') LogPrinter? wtf,
+    LogPrinter? info,
+    LogPrinter? warning,
+    LogPrinter? error,
+  }) : _printerMap = {
+          Level.debug: debug ?? realPrinter,
+          Level.trace: trace ?? verbose ?? realPrinter,
+          Level.fatal: fatal ?? wtf ?? realPrinter,
+          Level.info: info ?? realPrinter,
+          Level.warning: warning ?? realPrinter,
+          Level.error: error ?? realPrinter,
+        };
 
   @override
-  List<String> log(LogEvent event) => _printerMap[event.level].log(event);
+  List<String> log(LogEvent event) => _printerMap[event.level]?.log(event) ?? [];
 }

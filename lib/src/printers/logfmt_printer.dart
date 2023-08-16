@@ -1,5 +1,4 @@
-import 'package:logger_plus/src/log_printer.dart';
-import 'package:logger_plus/src/logger.dart';
+import 'package:logger_plus/logger_plus.dart';
 
 /// Outputs a logfmt message:
 /// ```
@@ -7,12 +6,12 @@ import 'package:logger_plus/src/logger.dart';
 /// ```
 class LogfmtPrinter extends LogPrinter {
   static final levelPrefixes = {
-    Level.verbose: 'verbose',
+    Level.trace: 'trace',
     Level.debug: 'debug',
     Level.info: 'info',
     Level.warning: 'warning',
     Level.error: 'error',
-    Level.wtf: 'wtf',
+    Level.fatal: 'fatal',
   };
 
   @override
@@ -28,6 +27,9 @@ class LogfmtPrinter extends LogPrinter {
           output.write(' ${entry.key}="${entry.value}"');
         }
       });
+    }
+    if (event.error != null) {
+      output.write(' error="${event.error}"');
     }
 
     return [output.toString()];

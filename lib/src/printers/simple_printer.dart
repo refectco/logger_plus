@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:logger_plus/src/logger.dart';
-import 'package:logger_plus/src/log_printer.dart';
-import 'package:logger_plus/src/ansi_color.dart';
+import 'package:logger_plus/logger_plus.dart';
 
 /// Outputs simple log messages:
 /// ```
@@ -10,21 +8,21 @@ import 'package:logger_plus/src/ansi_color.dart';
 /// ```
 class SimplePrinter extends LogPrinter {
   static final levelPrefixes = {
-    Level.verbose: '[V]',
+    Level.trace: '[T]',
     Level.debug: '[D]',
     Level.info: '[I]',
     Level.warning: '[W]',
     Level.error: '[E]',
-    Level.wtf: '[WTF]',
+    Level.fatal: '[FATAL]',
   };
 
   static final levelColors = {
-    Level.verbose: AnsiColor.fg(AnsiColor.grey(0.5)),
-    Level.debug: AnsiColor.none(),
-    Level.info: AnsiColor.fg(12),
-    Level.warning: AnsiColor.fg(208),
-    Level.error: AnsiColor.fg(196),
-    Level.wtf: AnsiColor.fg(199),
+    Level.trace: AnsiColor.fg(AnsiColor.grey(0.5)),
+    Level.debug: const AnsiColor.none(),
+    Level.info: const AnsiColor.fg(12),
+    Level.warning: const AnsiColor.fg(208),
+    Level.error: const AnsiColor.fg(196),
+    Level.fatal: const AnsiColor.fg(199),
   };
 
   final bool printTime;
@@ -36,7 +34,7 @@ class SimplePrinter extends LogPrinter {
   List<String> log(LogEvent event) {
     var messageStr = _stringifyMessage(event.message);
     var errorStr = event.error != null ? '  ERROR: ${event.error}' : '';
-    var timeStr = printTime ? 'TIME: ${DateTime.now().toIso8601String()}' : '';
+    var timeStr = printTime ? 'TIME: ${event.time.toIso8601String()}' : '';
     return ['${_labelFor(event.level)} $timeStr $messageStr$errorStr'];
   }
 
