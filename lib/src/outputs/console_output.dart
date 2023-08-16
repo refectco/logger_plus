@@ -1,5 +1,4 @@
-import 'package:logger_plus/src/logger.dart';
-import 'package:logger_plus/src/log_output.dart';
+import 'package:logger_plus/logger_plus.dart';
 
 /// Default implementation of [LogOutput].
 ///

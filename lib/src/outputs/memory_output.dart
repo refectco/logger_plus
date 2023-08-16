@@ -1,7 +1,6 @@
 import 'dart:collection';
 
-import 'package:logger_plus/src/logger.dart';
-import 'package:logger_plus/src/log_output.dart';
+import 'package:logger_plus/logger_plus.dart';
 
 /// Buffers [OutputEvent]s.
 class MemoryOutput extends LogOutput {
@@ -14,8 +13,7 @@ class MemoryOutput extends LogOutput {
   /// The buffer of events.
   final ListQueue<OutputEvent> buffer;
 
-  MemoryOutput({this.bufferSize = 20, this.secondOutput})
-      : buffer = ListQueue(bufferSize);
+  MemoryOutput({this.bufferSize = 20, this.secondOutput}) : buffer = ListQueue(bufferSize);
 
   @override
   void output(OutputEvent event) {
