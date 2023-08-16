@@ -104,9 +104,10 @@ class LogConsoleState extends State<LogConsole> {
       theme: widget.dark ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
         body: SafeArea(
+          bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
+            children: [
               _buildTopBar(),
               Expanded(
                 child: _buildLogContent(),
@@ -117,7 +118,7 @@ class LogConsoleState extends State<LogConsole> {
         ),
         floatingActionButton: AnimatedOpacity(
           opacity: _followBottom ? 0 : 1,
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 400),
           child: Padding(
             padding: const EdgeInsets.only(bottom: 60),
             child: FloatingActionButton(
