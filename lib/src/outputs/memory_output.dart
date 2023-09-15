@@ -1,6 +1,7 @@
 import 'dart:collection';
 
-import 'package:logger_plus/logger_plus.dart';
+import '../log_output.dart';
+import '../output_event.dart';
 
 /// Buffers [OutputEvent]s.
 class MemoryOutput extends LogOutput {

@@ -1,55 +1,12 @@
-import 'package:logger_plus/logger_plus.dart';
-
-/// [Level]s to control logging output. Logging can be enabled to include all
-/// levels above certain [Level].
-enum Level {
-  all(0),
-  @Deprecated('[verbose] is being deprecated in favor of [trace].')
-  verbose(999),
-  trace(1000),
-  debug(2000),
-  info(3000),
-  warning(4000),
-  error(5000),
-  @Deprecated('[wtf] is being deprecated in favor of [fatal].')
-  wtf(5999),
-  fatal(6000),
-  @Deprecated('[nothing] is being deprecated in favor of [off].')
-  nothing(9999),
-  off(10000),
-  ;
-
-  final int value;
-
-  const Level(this.value);
-}
-
-class LogEvent {
-  final Level level;
-  final dynamic message;
-  final Object? error;
-  final StackTrace? stackTrace;
-
-  /// Time when this log was created.
-  final DateTime time;
-
-  LogEvent(
-    this.level,
-    this.message, {
-    DateTime? time,
-    this.error,
-    this.stackTrace,
-  }) : time = time ?? DateTime.now();
-}
-
-class OutputEvent {
-  final List<String> lines;
-  final LogEvent origin;
-
-  Level get level => origin.level;
-
-  OutputEvent(this.origin, this.lines);
-}
+import 'filters/development_filter.dart';
+import 'log_event.dart';
+import 'log_filter.dart';
+import 'log_level.dart';
+import 'log_output.dart';
+import 'log_printer.dart';
+import 'output_event.dart';
+import 'outputs/console_output.dart';
+import 'printers/pretty_printer.dart';
 
 typedef LogCallback = void Function(LogEvent event);
 
@@ -238,9 +195,9 @@ class Logger {
   /// Closes the logger and releases all resources.
   Future<void> close() async {
     _active = false;
-    _filter.destroy();
+    await _filter.destroy();
     _printer.destroy();
-    _output.destroy();
+    await _output.destroy();
   }
 
   /// Register a [LogCallback] which is called for each new [LogEvent].

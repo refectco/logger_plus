@@ -1,4 +1,5 @@
-import 'package:logger_plus/logger_plus.dart';
+import '../log_output.dart';
+import '../output_event.dart';
 
 /// Logs simultaneously to multiple [LogOutput] outputs.
 class MultiOutput extends LogOutput {

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:logger_plus/logger_plus.dart';
+import 'output_event.dart';
 
 /// Log output receives a [OutputEvent] from [LogPrinter] and sends it to the
 /// desired destination.

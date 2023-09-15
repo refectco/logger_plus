@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import 'package:logger_plus/logger_plus.dart';
+import '../../logger_plus.dart';
+import '../log_event.dart';
+import '../log_level.dart';
 
 /// Outputs simple log messages:
 /// ```

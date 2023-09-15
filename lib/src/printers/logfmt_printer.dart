@@ -1,4 +1,6 @@
-import 'package:logger_plus/logger_plus.dart';
+import '../log_event.dart';
+import '../log_level.dart';
+import '../log_printer.dart';
 
 /// Outputs a logfmt message:
 /// ```

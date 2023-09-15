@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
     logger.e(_counter);
-    logger.wtf("WTF");
+    logger.f("F");
     logger.d("Debug");
   }
 
@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 '$_counter',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ],
           ),

@@ -1,4 +1,6 @@
-import 'package:logger_plus/logger_plus.dart';
+import '../log_event.dart';
+import '../log_level.dart';
+import '../log_printer.dart';
 
 /// A decorator for a [LogPrinter] that allows for the composition of
 /// different printers to handle different log messages. Provide it's
