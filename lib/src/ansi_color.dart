@@ -10,16 +10,16 @@ class AnsiColor {
   final int? bg;
   final bool color;
 
-  AnsiColor.none()
+  const AnsiColor.none()
       : fg = null,
         bg = null,
         color = false;
 
-  AnsiColor.fg(this.fg)
+  const AnsiColor.fg(this.fg)
       : bg = null,
         color = true;
 
-  AnsiColor.bg(this.bg)
+  const AnsiColor.bg(this.bg)
       : fg = null,
         color = true;
 
@@ -36,6 +36,7 @@ class AnsiColor {
 
   String call(String msg) {
     if (color) {
+      // ignore: unnecessary_brace_in_string_interps
       return '${this}$msg$ansiDefault';
     } else {
       return msg;

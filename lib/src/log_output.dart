@@ -1,4 +1,6 @@
-import 'package:logger_plus/src/logger.dart';
+import 'dart:async';
+
+import 'output_event.dart';
 
 /// Log output receives a [OutputEvent] from [LogPrinter] and sends it to the
 /// desired destination.
@@ -6,9 +8,9 @@ import 'package:logger_plus/src/logger.dart';
 /// This can be an output stream, a file or a network target. [LogOutput] may
 /// cache multiple log messages.
 abstract class LogOutput {
-  void init() {}
+  Future<void> init() async {}
 
   void output(OutputEvent event);
 
-  void destroy() {}
+  Future<void> destroy() async {}
 }

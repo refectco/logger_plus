@@ -1,5 +1,5 @@
-import 'package:logger_plus/src/log_output.dart';
-import 'package:logger_plus/src/logger.dart';
+import '../log_output.dart';
+import '../output_event.dart';
 
 /// Logs simultaneously to multiple [LogOutput] outputs.
 class MultiOutput extends LogOutput {
@@ -8,6 +8,7 @@ class MultiOutput extends LogOutput {
   MultiOutput(List<LogOutput?>? outputs) {
     _outputs = _normalizeOutputs(outputs);
   }
+
   List<LogOutput> _normalizeOutputs(List<LogOutput?>? outputs) {
     final normalizedOutputs = <LogOutput>[];
 
@@ -23,10 +24,8 @@ class MultiOutput extends LogOutput {
   }
 
   @override
-  void init() {
-    for (var o in _outputs) {
-      o.init();
-    }
+  Future<void> init() async {
+    await Future.wait(_outputs.map((e) => e.init()));
   }
 
   @override
@@ -37,9 +36,7 @@ class MultiOutput extends LogOutput {
   }
 
   @override
-  void destroy() {
-    for (var o in _outputs) {
-      o.destroy();
-    }
+  Future<void> destroy() async {
+    await Future.wait(_outputs.map((e) => e.destroy()));
   }
 }

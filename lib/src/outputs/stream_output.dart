@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:logger_plus/src/logger.dart';
-import 'package:logger_plus/src/log_output.dart';
+import '../log_output.dart';
+import '../output_event.dart';
 
 class StreamOutput extends LogOutput {
   late StreamController<List<String>> _controller;
@@ -28,7 +28,7 @@ class StreamOutput extends LogOutput {
   }
 
   @override
-  void destroy() {
-    _controller.close();
+  Future<void> destroy() {
+    return _controller.close();
   }
 }

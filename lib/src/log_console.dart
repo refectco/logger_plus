@@ -1,7 +1,7 @@
 part of logger_plus;
 
 ListQueue<OutputEvent> _outputEventBuffer = ListQueue();
-//int _bufferSize = 20;
+
 bool _initialized = false;
 
 class LogConsole extends StatefulWidget {
@@ -15,30 +15,18 @@ class LogConsole extends StatefulWidget {
   static void init({int bufferSize = 20}) {
     if (_initialized) return;
 
-    //_bufferSize = bufferSize;
     _initialized = true;
-    Logger.addOutputListener().listen((event) {
+
+    Logger.addOutputListener((event) {
       if (_outputEventBuffer.length == bufferSize) {
         _outputEventBuffer.removeFirst();
       }
       _outputEventBuffer.add(event);
     });
-    /*_streamLister.stream.listen((event) {
-      if (_outputEventBuffer.length == bufferSize) {
-        _outputEventBuffer.removeFirst();
-      }
-      _outputEventBuffer.add(OutputEvent(Level.debug, event));
-    });*/
-    /*Logger.addOutputListener((e) {
-      if (_outputEventBuffer.length == bufferSize) {
-        _outputEventBuffer.removeFirst();
-      }
-      _outputEventBuffer.add(e);
-    });*/
   }
 
   @override
-  _LogConsoleState createState() => _LogConsoleState();
+  LogConsoleState createState() => LogConsoleState();
 }
 
 class RenderedEvent {
@@ -50,16 +38,14 @@ class RenderedEvent {
   RenderedEvent(this.id, this.level, this.span, this.lowerCaseText);
 }
 
-class _LogConsoleState extends State<LogConsole> {
-  //OutputCallback? _callback;
-
+class LogConsoleState extends State<LogConsole> {
   final ListQueue<RenderedEvent> _renderedBuffer = ListQueue();
   List<RenderedEvent> _filteredBuffer = [];
 
   final _scrollController = ScrollController();
   final _filterController = TextEditingController();
 
-  Level _filterLevel = Level.verbose;
+  Level _filterLevel = Level.trace;
   double _logFontSize = 14;
 
   var _currentId = 0;
@@ -70,28 +56,9 @@ class _LogConsoleState extends State<LogConsole> {
   void initState() {
     super.initState();
 
-    /*_callback = (e) {
-      if (_renderedBuffer.length == _bufferSize) {
-        _renderedBuffer.removeFirst();
-      }
-
-      _renderedBuffer.add(_renderEvent(e));
-      _refreshFilter();
-    };*/
-
-    //Logger.addOutputListener(_callback);
-    /*_streamLister.stream.listen((event) {
-      if (_renderedBuffer.length == _bufferSize) {
-        _renderedBuffer.removeFirst();
-      }
-
-      _renderedBuffer.add(_renderEvent(OutputEvent(Level.debug, event)));
-      _refreshFilter();
-    });*/
     _scrollController.addListener(() {
       if (!_scrollListenerEnabled) return;
-      var scrolledToBottom = _scrollController.offset >=
-          _scrollController.position.maxScrollExtent;
+      var scrolledToBottom = _scrollController.offset >= _scrollController.position.maxScrollExtent;
       setState(() {
         _followBottom = scrolledToBottom;
       });
@@ -134,20 +101,13 @@ class _LogConsoleState extends State<LogConsole> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: widget.dark
-          ? ThemeData(
-              brightness: Brightness.dark,
-              //accentColor: Colors.blueGrey,
-            )
-          : ThemeData(
-              brightness: Brightness.light,
-              //accentColor: Colors.lightBlueAccent,
-            ),
+      theme: widget.dark ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
         body: SafeArea(
+          bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
+            children: [
               _buildTopBar(),
               Expanded(
                 child: _buildLogContent(),
@@ -158,17 +118,17 @@ class _LogConsoleState extends State<LogConsole> {
         ),
         floatingActionButton: AnimatedOpacity(
           opacity: _followBottom ? 0 : 1,
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 400),
           child: Padding(
             padding: const EdgeInsets.only(bottom: 60),
             child: FloatingActionButton(
               mini: true,
               clipBehavior: Clip.antiAlias,
+              onPressed: _scrollToBottom,
               child: Icon(
                 Icons.arrow_downward,
                 color: widget.dark ? Colors.white : Colors.lightBlue[900],
               ),
-              onPressed: _scrollToBottom,
             ),
           ),
         ),
@@ -265,28 +225,28 @@ class _LogConsoleState extends State<LogConsole> {
             value: _filterLevel,
             items: const [
               DropdownMenuItem(
+                value: Level.trace,
                 child: Text("VERBOSE"),
-                value: Level.verbose,
               ),
               DropdownMenuItem(
-                child: Text("DEBUG"),
                 value: Level.debug,
+                child: Text("DEBUG"),
               ),
               DropdownMenuItem(
-                child: Text("INFO"),
                 value: Level.info,
+                child: Text("INFO"),
               ),
               DropdownMenuItem(
-                child: Text("WARNING"),
                 value: Level.warning,
+                child: Text("WARNING"),
               ),
               DropdownMenuItem(
-                child: Text("ERROR"),
                 value: Level.error,
+                child: Text("ERROR"),
               ),
               DropdownMenuItem(
-                child: Text("WTF"),
-                value: Level.wtf,
+                value: Level.fatal,
+                child: Text("FATAL"),
               )
             ],
             onChanged: (value) {
@@ -330,8 +290,6 @@ class _LogConsoleState extends State<LogConsole> {
 
   @override
   void dispose() {
-    //_streamLister.destroy();
-    //Logger.removeOutputListener(_callback);
     super.dispose();
   }
 }
@@ -340,8 +298,7 @@ class LogBar extends StatelessWidget {
   final bool dark;
   final Widget child;
 
-  const LogBar({Key? key, required this.dark, required this.child})
-      : super(key: key);
+  const LogBar({Key? key, required this.dark, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

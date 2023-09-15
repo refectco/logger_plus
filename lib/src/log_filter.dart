@@ -1,4 +1,5 @@
-import 'package:logger_plus/src/logger.dart';
+import 'log_event.dart';
+import 'log_level.dart';
 
 /// An abstract filter of log messages.
 ///
@@ -6,7 +7,8 @@ import 'package:logger_plus/src/logger.dart';
 /// Every implementation should consider [Logger.level].
 abstract class LogFilter {
   Level? level;
-  void init() {}
+
+  Future<void> init() async {}
 
   /// Is called every time a new log message is sent and decides if
   /// it will be printed or canceled.
@@ -14,5 +16,5 @@ abstract class LogFilter {
   /// Returns `true` if the message should be logged.
   bool shouldLog(LogEvent event);
 
-  void destroy() {}
+  Future<void> destroy() async {}
 }
